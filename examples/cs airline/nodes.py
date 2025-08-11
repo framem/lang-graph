@@ -6,7 +6,7 @@ def Triage(state: CustomerState):
 
 def AskForFlightNumber(state: CustomerState):
     flight_number = "A-123"
-    print("buy number: " + str(flight_number))
+    print("flight number: " + str(flight_number))
     state['flight_number'] = flight_number
     return state
 
