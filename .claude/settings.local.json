@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app:*)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node:*)",
+      "WebFetch(domain:www.prisma.io)",
+      "Bash(chmod:*)",
+      "Bash(docker-compose:*)",
+      "Bash(npx:*)",
+      "Bash(find:*)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,6 @@
+services:
+  coding-agent:
+    image: nordwind/claude:latest
+    container_name: langGraph_code_assistant
+    volumes:
+      - .:/app
