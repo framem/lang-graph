@@ -13,9 +13,6 @@ from agents import ChatAgent
 def chat_agent_node(state: CustomerState) -> CustomerState:
     return ChatAgent(state).execute()
 
-# Specify the local language model
-local_llm = "mistral"
-llm = ChatOllama(model=local_llm, temperature=0)
 
 
 workflow = StateGraph(CustomerState)
