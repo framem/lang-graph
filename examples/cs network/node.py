@@ -1,5 +1,7 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import AIMessage, HumanMessage
+from langgraph.constants import END
+
 from state import GraphState
 import requests
 
@@ -36,7 +38,7 @@ def product_router(state: GraphState) -> str:
     if routing_decision in ["product_ask_id", "triage"]:
         return "triage"
 
-    return "end"
+    return END
 
 def product_agent(state: GraphState) -> GraphState:
     user_message = state["messages"][-1].content

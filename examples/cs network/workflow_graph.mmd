@@ -12,8 +12,6 @@ graph TD;
 	status_agent(status_agent)
 	__end__([<p>__end__</p>]):::last
 	__start__ --> triage;
-	product_agent -. &nbsp;end&nbsp; .-> __end__;
-	product_agent -.-> triage;
 	triage -. &nbsp;end&nbsp; .-> __end__;
 	triage -. &nbsp;confluence&nbsp; .-> confluence_agent;
 	triage -. &nbsp;jira&nbsp; .-> jira_agent;
@@ -21,6 +19,7 @@ graph TD;
 	triage -. &nbsp;status&nbsp; .-> status_agent;
 	confluence_agent --> __end__;
 	jira_agent --> __end__;
+	product_agent --> __end__;
 	status_agent --> __end__;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0

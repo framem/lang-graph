@@ -22,10 +22,7 @@ workflow.add_conditional_edges("triage", triage_router, {
     "status": "status_agent",
     "end": END
 })
-workflow.add_conditional_edges("product_agent", product_router, {
-    "triage": "triage",
-    "end": END
-})
+workflow.add_conditional_edges("product_agent", product_router)
 
 app = workflow.compile()
 
