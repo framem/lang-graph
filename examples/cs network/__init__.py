@@ -10,12 +10,12 @@ except ImportError:
     pass
 
 try:
-    from .node import Triage
+    from .node import triage_agent
 except ImportError:
     pass
 
 # Weitere Module können hier exportiert werden
 __all__ = [
     'GraphState',
-    'Triage',
+    'triage_agent',
 ]
