@@ -17,7 +17,8 @@
       "Bash(pip --version)",
       "Bash(pip3:*)",
       "Bash(source:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(pip install:*)"
     ],
     "deny": []
   }
