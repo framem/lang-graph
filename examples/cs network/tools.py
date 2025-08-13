@@ -1,6 +1,5 @@
-from langchain.tools import tool
 import requests
-from typing import Optional
+from langchain.tools import tool
 
 """
 ReAct-Agenten erwarten typischerweise englische Labels und Tool-Namen, da LangChain intern darauf ausgelegt ist.
@@ -32,43 +31,6 @@ def fetch_product(product_id: str) -> str:
             return f"Produkt mit ID {product_id} nicht gefunden."
     except Exception as e:
         return f"Fehler beim Abrufen des Produkts: {str(e)}"
-
-@tool
-def search_products(category: Optional[str] = None) -> str:
-    """Search for products, optionally filtered by category.
-
-    Args:
-        category: Optional category to filter by
-
-    Returns:
-        List of products as formatted string
-    """
-    try:
-        url = 'https://fakestoreapi.com/products'
-        response = requests.get(url)
-
-        if response.status_code == 200:
-            products = response.json()
-
-            # Filter by category if provided
-            if category:
-                products = [product for product in products if product.get('category', '').lower() == category.lower()]
-
-            if not products:
-                if category:
-                    return f"Keine Produkte in der Kategorie '{category}' gefunden."
-                else:
-                    return "Keine Produkte gefunden."
-
-            result = "Gefundene Produkte:\n"
-            for product in products:
-                result += f"- ID {product['id']}: {product['title']} (${product['price']})\n"
-            return result.strip()
-        else:
-            return "Fehler beim Suchen der Produkte."
-    except Exception as e:
-        return f"Fehler bei der Produktsuche: {str(e)}"
-
 
 @tool
 def get_product_categories() -> str:

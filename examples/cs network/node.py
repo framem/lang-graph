@@ -5,7 +5,7 @@ from langchain_ollama import ChatOllama
 from langgraph.constants import END
 
 from state import GraphState
-from tools import fetch_product, search_products, get_product_categories
+from tools import fetch_product, get_product_categories
 
 
 def triage_agent(state: GraphState) -> GraphState:
@@ -54,7 +54,7 @@ def product_agent(state: GraphState) -> GraphState:
         timeout=10
     )
 
-    tools = [fetch_product, search_products, get_product_categories]
+    tools = [fetch_product, get_product_categories]
 
     # ReAct prompt template
     react_prompt = PromptTemplate.from_template("""
