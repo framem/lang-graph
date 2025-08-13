@@ -21,12 +21,12 @@ def fetch_product(product_id: str) -> str:
         if response.status_code == 200:
             product_data = response.json()
             return f"""
-Produkt (ID: {product_id}):
-- Name: {product_data.get('title', 'N/A')}
-- Preis: ${product_data.get('price', 'N/A')}
-- Kategorie: {product_data.get('category', 'N/A')}
-- Bewertung: {product_data.get('rating', {}).get('rate', 'N/A')}/5 ({product_data.get('rating', {}).get('count', 0)} Bewertungen)
-- Beschreibung: {product_data.get('description', 'N/A')}
+            Produkt (ID: {product_id}):
+            - Name: {product_data.get('title', 'N/A')}
+            - Preis: ${product_data.get('price', 'N/A')}
+            - Kategorie: {product_data.get('category', 'N/A')}
+            - Bewertung: {product_data.get('rating', {}).get('rate', 'N/A')}/5 ({product_data.get('rating', {}).get('count', 0)} Bewertungen)
+            - Beschreibung: {product_data.get('description', 'N/A')}
             """.strip()
         else:
             return f"Produkt mit ID {product_id} nicht gefunden."
@@ -34,25 +34,32 @@ Produkt (ID: {product_id}):
         return f"Fehler beim Abrufen des Produkts: {str(e)}"
 
 @tool
-def search_products(category: Optional[str] = None, limit: int = 5) -> str:
+def search_products(category: Optional[str] = None) -> str:
     """Search for products, optionally filtered by category.
 
     Args:
         category: Optional category to filter by
-        limit: Maximum number of products to return (default 5)
 
     Returns:
         List of products as formatted string
     """
     try:
-        if category:
-            url = 'https://fakestoreapi.com/products'
-        else:
-            url = 'https://fakestoreapi.com/products'
-
+        url = 'https://fakestoreapi.com/products'
         response = requests.get(url)
+
         if response.status_code == 200:
-            products = response.json()[:limit]
+            products = response.json()
+
+            # Filter by category if provided
+            if category:
+                products = [product for product in products if product.get('category', '').lower() == category.lower()]
+
+            if not products:
+                if category:
+                    return f"Keine Produkte in der Kategorie '{category}' gefunden."
+                else:
+                    return "Keine Produkte gefunden."
+
             result = "Gefundene Produkte:\n"
             for product in products:
                 result += f"- ID {product['id']}: {product['title']} (${product['price']})\n"
@@ -61,6 +68,7 @@ def search_products(category: Optional[str] = None, limit: int = 5) -> str:
             return "Fehler beim Suchen der Produkte."
     except Exception as e:
         return f"Fehler bei der Produktsuche: {str(e)}"
+
 
 @tool
 def get_product_categories() -> str:
