@@ -1,5 +1,5 @@
 from langchain_ollama import ChatOllama
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, HumanMessage
 from state import GraphState
 import requests
 
@@ -16,7 +16,7 @@ def triage_agent(state: GraphState) -> GraphState:
         "Mögliche Kategorien: Product, Jira, Confluence, Status\n"
         "Gib nur eine dieser Kategorien als Antwort zurück. Wenn keine passt, gibt 'end' zurück."
     )
-    prompt = f"System:{system_prompt}\nNutzeranfrage: {user_message}"
+    prompt = f"System:{system_prompt}\nNutzeranfrage: {HumanMessage(content=user_message).content}"
     response = llm.invoke(prompt)
     category = response.content.strip().lower()
     if category not in ["product", "jira", "confluence", "status"]:
