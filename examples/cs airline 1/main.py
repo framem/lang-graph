@@ -1,12 +1,8 @@
-from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, END
 
-from nodes import Triage,AskForFlightNumber,GetFlightDetails
-from state import CustomerState
-from edges import checking_required_data
-
 from agents import ChatAgent
-
+from nodes import Triage, AskForFlightNumber, GetFlightDetails
+from state import CustomerState
 
 
 # Initialize tasks for ChatAgent and ToolAgent
@@ -64,3 +60,4 @@ for s in app.stream(initial_state):
     # Print the current state
     print("for s in app.stream(initial_state):")
     print(s)
+
