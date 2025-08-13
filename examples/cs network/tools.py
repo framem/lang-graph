@@ -33,6 +33,25 @@ def fetch_product(product_id: str) -> str:
         return f"Fehler beim Abrufen des Produkts: {str(e)}"
 
 @tool
+def get_products() -> str:
+    """Get all product names.
+
+    Returns:
+        List of all product names, one per line
+    """
+    try:
+        response = requests.get('https://fakestoreapi.com/products')
+        if response.status_code == 200:
+            products = response.json()
+            product_names = [product.get('title', 'N/A') for product in products]
+            return f"Available products:\n" + "\n".join(product_names)
+        else:
+            return "Error fetching products."
+    except Exception as e:
+        return f"Error fetching products: {str(e)}"
+
+
+@tool
 def get_product_categories() -> str:
     """Get all available product categories.
 

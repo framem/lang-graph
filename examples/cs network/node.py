@@ -5,7 +5,7 @@ from langchain_ollama import ChatOllama
 from langgraph.constants import END
 
 from state import GraphState
-from tools import fetch_product, get_product_categories
+from tools import fetch_product, get_product_categories, get_products
 
 
 def triage_agent(state: GraphState) -> GraphState:
@@ -54,7 +54,7 @@ def product_agent(state: GraphState) -> GraphState:
         timeout=10
     )
 
-    tools = [fetch_product, get_product_categories]
+    tools = [fetch_product, get_products, get_product_categories]
 
     # ReAct prompt template
     react_prompt = PromptTemplate.from_template("""
@@ -76,9 +76,9 @@ def product_agent(state: GraphState) -> GraphState:
     Observation: the result of the action
     ... (this Thought/Action/Action Input/Observation can be repeated N times)
     Thought: I now know the final answer
-    Final Answer: the final answer to the original input question
+    Final Answer: the final answer to the original input question.
 
-    Always respond in German in the `Final Answer`. When retrieving product information, summarize it clearly. Use the tool names exactly as defined.
+    Always respond in German in the `Final Answer`. When retrieving product information, summarize it clearly.
 
     Question: {input}
     {agent_scratchpad}
