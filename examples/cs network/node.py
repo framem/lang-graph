@@ -99,17 +99,29 @@ def product_agent(state: GraphState) -> GraphState:
         state["routing_decision"] = "triage"
         return {"messages": state["messages"] + [AIMessage(content="Fehler beim Verarbeiten Ihrer Produktanfrage. Wie kann ich Ihnen sonst helfen?")]}
 
-def jira_tool(state: GraphState) -> GraphState:
+def jira_node(state: GraphState) -> GraphState:
     query = state["messages"][-1].content
     answer = query
     return {"messages": state["messages"] + [AIMessage(content=answer)]}
 
-def confluence_tool(state: GraphState) -> GraphState:
+def confluence_node(state: GraphState) -> GraphState:
     query = state["messages"][-1].content
     answer = query
     return {"messages": state["messages"] + [AIMessage(content=answer)]}
 
-def status_tool(state: GraphState) -> GraphState:
-    query = state["messages"][-1].content
-    answer = "All good"
+def status_node(state: GraphState) -> GraphState:
+    systems = [
+        {"name": "Database", "available": True},
+        {"name": "API", "available": True},
+        {"name": "Frontend", "available": False},
+        {"name": "Backend", "available": True},
+        {"name": "Cache", "available": True}
+    ]
+
+    offline_systems = [system["name"] for system in systems if not system["available"]]
+
+    if not offline_systems:
+        answer = "Everything works"
+    else:
+        answer = f"Offline systems: {', '.join(offline_systems)}"
     return {"messages": state["messages"] + [AIMessage(content=answer)]}
