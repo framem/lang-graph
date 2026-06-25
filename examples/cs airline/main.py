@@ -1,20 +1,12 @@
 from langgraph.graph import StateGraph, END
 
-from agents import ChatAgent
+from edges import checking_required_data
 from nodes import Triage, AskForFlightNumber, GetFlightDetails
 from state import CustomerState
 
 
-# Initialize tasks for ChatAgent and ToolAgent
-def chat_agent_node(state: CustomerState) -> CustomerState:
-    return ChatAgent(state).execute()
-
-
-
 workflow = StateGraph(CustomerState)
 
-
-workflow.add_node("ChatAgent", chat_agent_node)
 
 workflow.add_node("triage", Triage)
 workflow.add_node("askForFlightNumber", AskForFlightNumber)
@@ -23,21 +15,20 @@ workflow.add_node("getFlightDetails", GetFlightDetails)
 
 workflow.add_edge('triage', 'askForFlightNumber')
 workflow.add_edge('getFlightDetails', END)
-workflow.add_edge('ChatAgent', END)
 
 
 # Set the entry point of the workflow
-workflow.set_entry_point("ChatAgent")
+workflow.set_entry_point("triage")
 
-# # Add conditional edges
-# workflow.add_conditional_edges(
-#     "askForFlightNumber",
-#     checking_required_data,
-#     {
-#         "try_again": END,
-#         "got_flight_number": 'getFlightDetails',
-#     },
-# )
+# Add conditional edges: branch on whether a valid flight number is present
+workflow.add_conditional_edges(
+    "askForFlightNumber",
+    checking_required_data,
+    {
+        "try_again": END,
+        "got_flight_number": 'getFlightDetails',
+    },
+)
 
 
 # Compile the workflow into a runnable app
